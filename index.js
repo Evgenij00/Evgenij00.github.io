@@ -4,22 +4,15 @@ let inputValue = 100
 
 circle.style.strokeDasharray = circleLength;
 
-// animate.addEventListener('change', (event) => {
-//   console.log(event.target.checked)
-// })
-
 text.addEventListener('keypress', (event) => {
   if (event.key === 'Enter') {
       cancelAnimationFrame(requestAnimationFrameId)
-      svg.style.display = 'none'
       inputValue = event.target.value
-      svg.style.display = 'block'
-      draw(0, inputValue, true)
+      draw(0, inputValue)
   }
 })
 
 hidden.addEventListener('change', (event) => {
-  console.log(event.target.checked)
   if (event.target.checked) {
     cancelAnimationFrame(requestAnimationFrameId)
     svg.style.display = 'none'
@@ -37,19 +30,20 @@ function setProgress(percent = 50) {
 
 let requestAnimationFrameId = null
 
-function draw(percent = 0, max = 50) {
+function draw(percent, max) {
     if (max > 100) {
       max = 100
     }
   
     if (percent >= max) {
       setProgress(percent)
+      cancelAnimationFrame(requestAnimationFrameId)
       return setTimeout(() => {
           draw(0, inputValue)
         }, 1000)
     }
   
-    requestAnimationFrameId = requestAnimationFrame(() => draw(percent + 1, max))
+    requestAnimationFrameId = requestAnimationFrame(() => draw(percent + 1, inputValue))
     setProgress(percent)
 }
 
