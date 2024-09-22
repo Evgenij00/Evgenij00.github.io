@@ -1,0 +1,14 @@
+.circle_loader {
+    fill: none;
+    stroke: #FFB10A;
+    stroke-width: 5px;
+    transform-origin: center;
+    transform: rotate(-90deg);
+  }
+  
+  text {
+    dominant-baseline:middle;
+    text-anchor:middle;
+    font-size:30px;
+    font-family:Arial;
+  }
