@@ -7,37 +7,24 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="app-wrapper">
-    <div class="svg-wrapper">
-      <svg id='svg' class="svg_circle_loader" width="200" height="200">
-        <circle cx="100" cy="100" r="50" stroke='#EAEAEA' stroke-width="5" fill='none'></circle>
-        <circle cx="100" cy="100" r="50" class="circle_loader" id="circle"></circle>
-        <text x="100" y="100" id="pct" ></text>
-      </svg>
-    </div>
-
-    <div class="container">
-      <div class="form-group">
-        <input id="text" type="text" class="input-value" value="" autocomplete="off">
-      </div>
-  
-      <div class="form-group">
-          <div class="switch">
-              <input id="animate" type="checkbox">
-              <span class="slider"></span>
-          </div>
-          <label for="animate">Animate</label>
-      </div>
-  
-      <div class="form-group">
-          <div class="switch">
-              <input id="hidden" type="checkbox">
-              <span class="slider"></span>
-          </div>
-          <label for="hidden">Hide</label>
-      </div>
-    </div>
+  <div class="container">
+    <svg class="svg" width="200" height="200">
+      <circle cx="100" cy="100" r="50" stroke='#EAEAEA' stroke-width="5" fill='none'></circle>
+      <circle cx="100" cy="100" r="50" class="circle_loader" stroke='#2196F3' stroke-width="5" fill="none"></circle>
+    </svg>
   </div>
+  
+  <br />
+
+  <input class="input-text" id="number" type="number" />
+
+  <br />
+  
+  <input class="animate-switch" type="checkbox" />animate
+  
+  <br />
+  
+  <input class="hidden-switch" type="checkbox" /> hidden
 
   <script src="/index.js"></script>
 </body>

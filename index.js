@@ -1,106 +1,78 @@
-// comment: динамические параметры
-let timerIds = []
-let inputValue = ''
+const container = document.querySelector('.container')
+const svg = document.querySelector('.svg')
+const circleLoader = document.querySelector('.circle_loader')
+const inputText = document.querySelector('.input-text')
+const hiddenSwitch = document.querySelector('.hidden-switch')
+const animateSwitch = document.querySelector('.animate-switch')
 
-// comment: Длина окружности по формуле: 2 * P * R
-const circleLength = 2 * Math.PI * circle.r.baseVal.value; 
+let timerId = 0
 
-// comment: задаем начльные значения для circle
-circle.style.strokeDasharray = circleLength;
-circle.style.strokeDashoffset = circleLength
+const animationTime = 1000
+const circleLength = 2 * Math.PI * circleLoader.r.baseVal.value;
 
-// ==================== helpers =======================
+circleLoader.style.strokeDasharray = circleLength;
+circleLoader.style.strokeDashoffset = circleLength;
 
-function setProgressBarValue(value) {
-  const partLength = value * circleLength / 100
-  circle.style.strokeDashoffset = circleLength - partLength
+// =============== helpers ================
+
+const addClassName = (element, className) => element.classList.add(className)
+const removeClassName = (element, className) => element.classList.remove(className)
+
+function setDashoffset(percent) {
+  const partLength = percent * circleLength / 100; // comment: переводим проценты в длину 
+  circleLoader.style.strokeDashoffset = circleLength - partLength;
 }
 
-function clearAllIntervals() {
-  timerIds.forEach(id => clearInterval(id))
-  timerIds.length = 0
+function validateValue(value) {
+  let result = Number(value)
+
+  if (value < 0) result = 0
+  if (value > 100) result = 100
+
+  if (result !== value) {
+    inputText.value = result
+  }
+
+  return result
 }
 
-function hideBlock() {
-  svg.style.display = 'none'
-}
+function animate() {
+  addClassName(container, 'animate')
 
-function showBlock() {
-  svg.style.display = 'block'
-}
-
-function getAnimationValue() {
-  return animate.checked
-}
-
-function startAnimation() {
-  draw(0, inputValue)
-}
-
-function stopAnimation() {
-  clearAllIntervals()
-}
-
-function restartAnimationWithDelay(delay = 1000) {
   setTimeout(() => {
-    startAnimation()
-  }, delay)
+    removeClassName(container, 'animate')
+  }, animationTime)
 }
 
-function isAnimationComplete(currentValue) {
-  return currentValue === inputValue
+function startAnimationLoop() {
+  animate()
+
+  timerId = setInterval(() => {
+    animate()
+  }, animationTime * 2)
 }
 
-function draw(minValue = 0) {
-  let currentValue = minValue;
-
-  id = setInterval(function() {
-    setProgressBarValue(currentValue)
-
-    if (isAnimationComplete(currentValue, inputValue)) {
-      stopAnimation()
-      restartAnimationWithDelay()
-    }
-
-    currentValue++;
-  }, 24);
-
-  timerIds.push(id)
+function stopAnimationLoop() {
+  clearInterval(timerId)
+  removeClassName(container, 'animate')
 }
 
-// ==================== events + handlers =======================
-
-text.addEventListener('input', inputHandler)
-hidden.addEventListener('change', displayHandler)
-animate.addEventListener('change', animationHandler)
+// =============== handlers ================
 
 function inputHandler(event) {
-  inputValue = Number(event.target.value)
-  if (inputValue) {
-    setProgressBarValue(inputValue)
-  } else {
-    setProgressBarValue(0)
-  }
+  setDashoffset(validateValue(event.target.value))
 }
 
 function animationHandler(event) {
-  if (event.target.checked) {
-    startAnimation()
-  } else {
-    stopAnimation()
-  }
+  event.target.checked ? startAnimationLoop() : stopAnimationLoop()
 }
 
 function displayHandler(event) {
-  if (event.target.checked) {
-    if (getAnimationValue()) {
-      stopAnimation()
-    }
-    hideBlock()
-  } else {
-    showBlock()
-    if (getAnimationValue()) {
-      startAnimation()
-    }
-  }
+  event.target.checked ? addClassName(svg, 'hidden') : removeClassName(svg, 'hidden')
 }
+
+// =============== events ================
+
+inputText.addEventListener('change', inputHandler)
+hiddenSwitch.addEventListener('change', displayHandler)
+animateSwitch.addEventListener('change', animationHandler)
