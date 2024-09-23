@@ -1,14 +1,136 @@
+:root {
+  --primary-color: #2196F3; /* Основной цвет для включенного переключателя */
+  --secondary-color: #ccc;  /* Цвет фона для выключенного переключателя */
+  --background-color: #f4f4f4; /* Цвет фона страницы */
+  --container-bg-color: white; /* Цвет фона контейнера */
+  --text-color: black; /* Цвет текста */
+  --border-color: black; /* Цвет границы поля */
+  --input-bg-color: white; /* Цвет фона поля ввода */
+  --shadow-color: rgba(0, 0, 0, 0.1); /* Тень для контейнера */
+}
+
+body {
+  margin: 0;
+}
+
 .circle_loader {
-    fill: none;
-    stroke: #FFB10A;
-    stroke-width: 5px;
-    transform-origin: center;
-    transform: rotate(-90deg);
-  }
+  fill: none;
+  stroke: var(--primary-color);
+  stroke-width: 5px;
+  transform-origin: center;
+  transform: rotate(-90deg);
+}
+
+/* text {
+  dominant-baseline:middle;
+  text-anchor:middle;
+  font-size:30px;
+  font-family:Arial;
+} */
+
+.app-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.svg-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 200px;
+}
+
+.actions-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+}
+
+.form-group label {
+  font-size: 16px;
+  color: var(--text-color);
+  margin-left: 16px;
+}
+
+.input-value {
+  width: 50px;
+  height: 28px;
+  padding: 0;  
+  box-sizing: border-box;
+
+  border-radius: 15px;
+  border: 2px solid var(--border-color);
+
+  text-align: center;
+  line-height: 30px;
+  font-size: 16px;
+
+  color: var(--text-color);
+  background-color: var(--input-bg-color);
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+
+  width: 50px;
+  height: 28px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  cursor: pointer;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  transition: 0.4s;
+
+  border-radius: 28px;
+  background-color: var(--secondary-color);
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  bottom: 3px;
+
+  height: 22px;
+  width: 22px;
+
+  transition: 0.4s;
   
-  text {
-    dominant-baseline:middle;
-    text-anchor:middle;
-    font-size:30px;
-    font-family:Arial;
-  }
+  border-radius: 50%;
+  background-color: var(--container-bg-color);
+}
+
+input:checked + .slider {
+  background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}

@@ -7,23 +7,38 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <svg id='svg' class="svg_circle_loader" width="200" height="200">
-    <circle cx="100" cy="100" r="50" stroke='#EAEAEA' stroke-width="5" fill='none'></circle>
-    <circle cx="100" cy="100" r="50" class="circle_loader" id="circle"></circle>
-    <text x="100" y="100" id="pct" ></text>
-  </svg>
+  <div class="app-wrapper">
+    <div class="svg-wrapper">
+      <svg id='svg' class="svg_circle_loader" width="200" height="200">
+        <circle cx="100" cy="100" r="50" stroke='#EAEAEA' stroke-width="5" fill='none'></circle>
+        <circle cx="100" cy="100" r="50" class="circle_loader" id="circle"></circle>
+        <text x="100" y="100" id="pct" ></text>
+      </svg>
+    </div>
+
+    <div class="container">
+      <div class="form-group">
+        <input id="text" type="text" class="input-value" value="" autocomplete="off">
+      </div>
   
-  <!-- <br />
+      <div class="form-group">
+          <div class="switch">
+              <input id="animate" type="checkbox">
+              <span class="slider"></span>
+          </div>
+          <label for="animate">Animate</label>
+      </div>
   
-  <input type="checkbox" id="animate" />animate -->
-  
-  <br />
-  
-  <input type="checkbox" id="hidden" />hidden
-  
-  <br />
-  
-  <input type="text" id="text" />text
+      <div class="form-group">
+          <div class="switch">
+              <input id="hidden" type="checkbox">
+              <span class="slider"></span>
+          </div>
+          <label for="hidden">Hide</label>
+      </div>
+    </div>
+  </div>
+
   <script src="/index.js"></script>
 </body>
 </html>

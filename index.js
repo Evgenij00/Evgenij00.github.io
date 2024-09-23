@@ -1,50 +1,106 @@
-const circleLength = 2 * Math.PI * circle.r.baseVal.value;
+// comment: динамические параметры
+let timerIds = []
+let inputValue = ''
 
-let inputValue = 100
+// comment: Длина окружности по формуле: 2 * P * R
+const circleLength = 2 * Math.PI * circle.r.baseVal.value; 
 
+// comment: задаем начльные значения для circle
 circle.style.strokeDasharray = circleLength;
+circle.style.strokeDashoffset = circleLength
 
-text.addEventListener('keypress', (event) => {
-  if (event.key === 'Enter') {
-      cancelAnimationFrame(requestAnimationFrameId)
-      inputValue = event.target.value
-      draw(0, inputValue)
-  }
-})
+// ==================== helpers =======================
 
-hidden.addEventListener('change', (event) => {
-  if (event.target.checked) {
-    cancelAnimationFrame(requestAnimationFrameId)
-    svg.style.display = 'none'
-  } else {
-    svg.style.display = 'block'
-    draw(0, inputValue)
-  }
-})
-
-function setProgress(percent = 50) {
-  const partLength = percent * circleLength / 100
+function setProgressBarValue(value) {
+  const partLength = value * circleLength / 100
   circle.style.strokeDashoffset = circleLength - partLength
 }
 
-
-let requestAnimationFrameId = null
-
-function draw(percent, max) {
-    if (max > 100) {
-      max = 100
-    }
-  
-    if (percent >= max) {
-      setProgress(percent)
-      cancelAnimationFrame(requestAnimationFrameId)
-      return setTimeout(() => {
-          draw(0, inputValue)
-        }, 1000)
-    }
-  
-    requestAnimationFrameId = requestAnimationFrame(() => draw(percent + 1, inputValue))
-    setProgress(percent)
+function clearAllIntervals() {
+  timerIds.forEach(id => clearInterval(id))
+  timerIds.length = 0
 }
 
-draw(0, inputValue)
+function hideBlock() {
+  svg.style.display = 'none'
+}
+
+function showBlock() {
+  svg.style.display = 'block'
+}
+
+function getAnimationValue() {
+  return animate.checked
+}
+
+function startAnimation() {
+  draw(0, inputValue)
+}
+
+function stopAnimation() {
+  clearAllIntervals()
+}
+
+function restartAnimationWithDelay(delay = 1000) {
+  setTimeout(() => {
+    startAnimation()
+  }, delay)
+}
+
+function isAnimationComplete(currentValue) {
+  return currentValue === inputValue
+}
+
+function draw(minValue = 0) {
+  let currentValue = minValue;
+
+  id = setInterval(function() {
+    setProgressBarValue(currentValue)
+
+    if (isAnimationComplete(currentValue, inputValue)) {
+      stopAnimation()
+      restartAnimationWithDelay()
+    }
+
+    currentValue++;
+  }, 24);
+
+  timerIds.push(id)
+}
+
+// ==================== events + handlers =======================
+
+text.addEventListener('input', inputHandler)
+hidden.addEventListener('change', displayHandler)
+animate.addEventListener('change', animationHandler)
+
+function inputHandler(event) {
+  inputValue = Number(event.target.value)
+  if (inputValue) {
+    setProgressBarValue(inputValue)
+  } else {
+    setProgressBarValue(0)
+  }
+}
+
+function animationHandler(event) {
+  if (event.target.checked) {
+    startAnimation()
+  } else {
+    stopAnimation()
+  }
+}
+
+function displayHandler(event) {
+  if (event.target.checked) {
+    if (getAnimationValue()) {
+      stopAnimation()
+    }
+    hideBlock()
+  } else {
+    showBlock()
+    if (getAnimationValue()) {
+      startAnimation()
+    }
+  }
+}
